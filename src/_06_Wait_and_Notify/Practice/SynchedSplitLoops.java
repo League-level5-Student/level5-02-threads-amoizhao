@@ -17,31 +17,35 @@ printed in order.
 
 public class SynchedSplitLoops {
 	static int counter = 0;
+	static Object object = new Object();
 
 	public static void main(String[] args) {
-		synchronized (SynchedSplitLoops.class) {
 			Thread t1 = new Thread(() -> {
+				synchronized (object) {
 				for (int i = 0; i < 100000; i++) {
+					try {
+						object.wait();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					counter++;
-				}
-			});
-
-			Thread t2 = new Thread(() -> {
-				for (int i = 0; i < 100000; i++) {
 					System.out.println(counter);
-					SynchedSplitLoops.class.notify();
+					object.notify();
+				}
+				for (int i = 0; i < 100000; i++) {
+					
+				}
 				}
 			});
 
 			t1.start();
-			t2.start();
 
 			try {
 				t1.join();
-				t2.join();
 			} catch (InterruptedException e) {
 				System.err.println("Could not join threads");
 			}
-		}
+		
 	}
 }
