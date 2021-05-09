@@ -14,8 +14,7 @@ public class Worker implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		if(!(tq.isEmpty())) {
-			tq.remove();
-			Task.perform();
+			tq.remove().perform();
 		}
 	}
 

@@ -8,10 +8,10 @@ public class ThreadPool {
 
 	ThreadPool(int totalThreads) {
 		threads = new Thread[totalThreads];
+		tq = new ConcurrentLinkedQueue<Task>();
 		for(Thread thread : threads) {
 			thread = new Thread(new Worker(tq));
 		}
-		tq = new ConcurrentLinkedQueue<Task>();
 	}
 	
 	public void addTask(Task task) {
